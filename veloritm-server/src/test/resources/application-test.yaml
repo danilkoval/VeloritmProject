@@ -1,0 +1,21 @@
+# Fast test profile: in-memory H2 in PostgreSQL-compatibility mode, no external infrastructure.
+# Hibernate builds the schema (create-drop); Flyway is disabled here. Integration tests that need
+# the real Postgres/Redis/Elasticsearch use Testcontainers and are skipped when Docker is absent.
+spring:
+  datasource:
+    url: jdbc:h2:mem:veloritm;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: ""
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  flyway:
+    enabled: false
+
+logging:
+  level:
+    com.veloritm: DEBUG

@@ -18,21 +18,56 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    jjwtVersion = '0.13.0'
+    springdocVersion = '3.0.3'
+}
+
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+    // --- Web / REST ---
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    compileOnly 'org.projectlombok:lombok'
+
+    // --- Persistence ---
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-database-postgresql'
     runtimeOnly 'org.postgresql:postgresql'
+
+    // --- Security / JWT ---
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
+
+    // --- Observability ---
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // --- API docs (springdoc 3.x targets Spring Boot 4 / Spring Framework 7) ---
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocVersion}"
+
+    // --- Lombok ---
+    compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
-    testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
-    testImplementation 'org.springframework.boot:spring-boot-starter-validation-test'
+
+    // --- Tests ---
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // Spring Boot 4 moved MockMvc test support (@AutoConfigureMockMvc) into a dedicated module.
+    testImplementation 'org.springframework.boot:spring-boot-webmvc-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    // H2 backs the fast `test` profile so the suite runs without Docker.
+    // Testcontainers (real Postgres/Redis/Elasticsearch for integration tests, auto-skipped when
+    // Docker is absent) is introduced in the milestone that adds the first integration test.
+    testRuntimeOnly 'com.h2database:h2'
     testCompileOnly 'org.projectlombok:lombok'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testAnnotationProcessor 'org.projectlombok:lombok'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+        exceptionFormat = 'full'
+    }
 }

@@ -1,0 +1,14 @@
+# Local development profile. Points at the infrastructure spun up by docker-compose.yml.
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/veloritm
+    username: veloritm
+    password: veloritm
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+
+logging:
+  level:
+    com.veloritm: DEBUG

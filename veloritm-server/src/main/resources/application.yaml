@@ -1,3 +1,46 @@
 spring:
   application:
     name: veloritm-server
+  profiles:
+    # Default to the local profile (Postgres + infra from docker-compose). Override with
+    # SPRING_PROFILES_ACTIVE=prod in production.
+    default: local
+  jpa:
+    open-in-view: false
+    hibernate:
+      # Flyway owns the schema; Hibernate only validates entity mappings against it.
+      ddl-auto: validate
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+server:
+  port: 8080
+  # Honour X-Forwarded-* from Nginx so generated URLs and remote addresses are correct behind the proxy.
+  forward-headers-strategy: framework
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: when-authorized
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  pattern:
+    # Prefix every log line with the request correlation id set by TraceIdFilter.
+    level: "%5p [%X{traceId:-}]"
+
+app:
+  version: 0.0.1-SNAPSHOT
+  cors:
+    allowed-origins:
+      - http://localhost:3000
