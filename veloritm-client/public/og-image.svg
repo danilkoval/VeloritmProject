@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#06081a"/>
+      <stop offset="100%" stop-color="#141a3d"/>
+    </linearGradient>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ff3d8b"/>
+      <stop offset="100%" stop-color="#ff7a3d"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1050" cy="100" r="220" fill="#6a4cff" opacity="0.18"/>
+  <circle cx="100" cy="580" r="180" fill="#ff3d8b" opacity="0.12"/>
+  <g font-family="Helvetica, Arial, sans-serif" font-weight="900" fill="#fff">
+    <text x="80" y="220" font-size="80">ВЕЛОРИТМ</text>
+    <text x="80" y="330" font-size="100">ТРИМАЙ</text>
+    <text x="80" y="430" font-size="100" fill="url(#brand)">СВІЙ РИТМ</text>
+    <text x="80" y="540" font-size="40" font-weight="400" fill="#b9bee0">Велосипеди · Запчастини · Сервіс</text>
+  </g>
+</svg>
